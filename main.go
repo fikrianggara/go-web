@@ -15,7 +15,7 @@ func handlerIndex(w http.ResponseWriter, r *http.Request) {
 	// f.Println(fikri.Code() + "->" + fikri.Build() + "->" + fikri.Test() + "->" + fikri.Deploy())
 	jsonInBytes, err := json.Marshal(fikri.(Person))
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -41,7 +41,7 @@ func handlerIntroWithParams(w http.ResponseWriter, r *http.Request) {
 	var u, err = url.Parse(urlString)
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -55,7 +55,7 @@ func handlerIntroWithParams(w http.ResponseWriter, r *http.Request) {
 	ageInt, err := strconv.Atoi(age)
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -78,6 +78,7 @@ func main() {
 		var message = "hello from '/index' endpoint"
 		w.Write([]byte(message))
 	})
+
 	http.HandleFunc("/introduction", handlerIntroduction)
 	http.HandleFunc("/named-introduction", handlerIntroWithParams)
 	http.HandleFunc("/", handlerIndex)
