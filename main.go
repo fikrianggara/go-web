@@ -3,28 +3,16 @@ package main
 import (
 	"encoding/json"
 	f "fmt"
+	"go-web/controller"
+	"go-web/model"
 	"html/template"
 	"net/http"
 	"net/url"
 	"strconv"
 )
 
-func handlerIndex(w http.ResponseWriter, r *http.Request) {
-
-	var fikri Developer = Person{"Fikri", 22, []string{"coding", "sports", "music"}}
-	// f.Println(fikri.Code() + "->" + fikri.Build() + "->" + fikri.Test() + "->" + fikri.Deploy())
-	jsonInBytes, err := json.Marshal(fikri.(Person))
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(jsonInBytes)
-}
-
 func handlerIntroduction(w http.ResponseWriter, r *http.Request) {
-	var fikri Developer = Person{"Fikri", 22, []string{"coding", "sports", "music"}}
+	var fikri model.Developer = model.Person{Name: "Fikri", Age: 22, Hobby: []string{"coding", "sports", "music"}}
 
 	var t, err = template.ParseFiles("introduction.html")
 	if err != nil {
@@ -81,7 +69,7 @@ func main() {
 
 	http.HandleFunc("/introduction", handlerIntroduction)
 	http.HandleFunc("/named-introduction", handlerIntroWithParams)
-	http.HandleFunc("/", handlerIndex)
+	http.HandleFunc("/", controller.Index)
 
 	// initiate server
 	var address = ":9000"

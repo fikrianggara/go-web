@@ -1,4 +1,4 @@
-package main
+package model
 
 type Person struct {
 	Name  string `json:"Name"`
